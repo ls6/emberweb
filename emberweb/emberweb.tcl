@@ -61,7 +61,13 @@ proc ::emberweb::processRequest {soc} {
 
    fconfigure $soc -blocking 0
    set reqLine [gets $soc]
+   flush $soc
    if {[fblocked $soc]} {
+      return
+   }
+
+   if {[string trim $reqLine] eq {}} {
+      close $soc
       return
    }
 
@@ -81,7 +87,7 @@ proc ::emberweb::processRequest {soc} {
 
    # See if there is a route handler for this path.
    foreach handler $uri_handlers {
-      if {[lindex $handler 0] == $path} {
+      if {[lindex $handler 0] eq $path} {
          # Build a dict of the parms.
          set parms_dic [::emberweb::parmsTodict $parms]
          eval {[lindex $handler 1] $soc $parms_dic}
@@ -102,7 +108,7 @@ proc ::emberweb::processRequest {soc} {
       fconfigure $fileChannel -translation binary
       fconfigure $soc -translation binary -buffering full
       puts $soc "HTTP/1.0 $return_codes(200)"
-      puts $soc "Content-Type: $content_types([string trim $ext "."])"
+      puts $soc "Content-Type: $content_types([string trim $ext {.}])"
       puts $soc "Connection: close"
       puts $soc ""
       fcopy $fileChannel $soc -command [list ::emberweb::done $fileChannel $soc]
