@@ -33,7 +33,7 @@ namespace eval ::emberweb {
 
    variable content_types
    array set content_types {
-      {}    text/plain
+      {}   text/plain
       txt  text/plain
       htm  text/html
       html text/html
@@ -79,10 +79,13 @@ proc ::emberweb::processRequest {soc} {
       set path $path$default
    }
 
+   # See if there is a route handler for this path.
    foreach handler $uri_handlers {
       if {[lindex $handler 0] == $path} {
-         eval {[lindex $handler 1] $soc $parms}
-	       return
+         # Build a dict of the parms.
+         set parms_dic [::emberweb::parmsTodict $parms]
+         eval {[lindex $handler 1] $soc $parms_dic}
+         return
       }
    }
 
@@ -138,6 +141,17 @@ proc ::emberweb::contentType {ext} {
    }
 
    return $content_types($ext)
+}
+
+proc ::emberweb::parmsTodict {parms} {
+   set parms_dict {}
+
+   foreach var [split $parms "&\n"] {
+      set pair [split $var {=}]
+      dict set parms_dict [lindex $pair 0] [lindex $pair 1]
+   }
+
+   return $parms_dict
 }
 
 proc ::emberweb::run {{port_in 8080} {root_in ""} {image_root_in ""}} {

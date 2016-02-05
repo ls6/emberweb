@@ -14,6 +14,17 @@ A one night hack and a work in progress!
 
 Documentation forthcoming.
 
+Temporary doc info:
+    - Route handler procs get a socket parm and dict with the parms.
+    - Only http GET is handled for now
+
+TODO:
+    - Add POST request handling.
+    - Add examples
+    - Document the lib
+
+Usage:
+
 Copy the emberweb folder to your local tcl lib directory
 
 A simple example:
