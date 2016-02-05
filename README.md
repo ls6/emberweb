@@ -1,2 +1,62 @@
-# emberweb
-A simple Tcl only Web framework for small systems 
+#
+# EmberWeb - A simple web handling framework for small systems.
+# Writtin in tcl
+#
+# By Scott Beasley 2016
+#
+# Based off of Dustmote by Harold Kaplan 1998 - 2002.
+# See: http://wiki.tcl.tk/4333
+#
+
+A simple Tcl only Web framework for small systems like the Raspberry Pi etc..
+
+A one night hack and a work in progress!
+
+Documentation forthcoming.
+
+Copy the emberweb folder to your local tcl lib directory
+
+A simple example:
+
+package require emberweb 1.0
+package require Tcl      8.5
+
+proc forward {soc parms} {
+   puts "in Forward"
+   puts $soc "HTTP/1.0 200 OK"
+   puts $soc "Connection: close"
+   puts $soc ""
+   close $soc
+}
+
+proc backward {soc parms} {
+   puts "in Backward"
+   puts $soc "HTTP/1.0 200 OK"
+   puts $soc "Connection: close"
+   puts $soc ""
+   close $soc
+}
+proc left {soc parms} {
+   puts "in Left"
+   puts $soc "HTTP/1.0 200 OK"
+   puts $soc "Connection: close"
+   puts $soc ""
+   close $soc
+}
+proc right {soc parms} {
+   puts "in Right"
+   puts $soc "HTTP/1.0 200 OK"
+   puts $soc "Connection: close"
+   puts $soc ""
+   close $soc
+}
+
+# Register a few call uri handlers
+::emberweb::addRoute {/forward} forward
+::emberweb::addRoute {/backward} backward
+::emberweb::addRoute {/left} left
+::emberweb::addRoute {/right} right
+
+# Start the server up and set you WWW html pages home and images home.
+::emberweb::run 8080 "c:/home/www/templates" \
+                     "c:/home/www/images"
