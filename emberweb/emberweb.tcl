@@ -16,8 +16,8 @@ namespace eval ::emberweb {
     # Export commands
    namespace export run addRoute contentType
 
-   variable root "C:/Users/jscottb/work/dustbunny/templates"
-   variable image_root "C:/Users/jscottb/work/dustbunny/images"
+   variable root "/home/www/templates"
+   variable image_root "/home/www/images"
    variable images {.jpg .gif .png .tif .svg}
    variable default "index.html"
    variable port 8080
