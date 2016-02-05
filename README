@@ -34,7 +34,7 @@ package require Tcl      8.5
 
 proc forward {soc parms} {
    puts "in Forward"
-   puts $soc "HTTP/1.0 200 OK"
+   puts $soc "HTTP/1.0 [::emberweb::http_return 200]"
    puts $soc "Connection: close"
    puts $soc ""
    close $soc
@@ -42,21 +42,21 @@ proc forward {soc parms} {
 
 proc backward {soc parms} {
    puts "in Backward"
-   puts $soc "HTTP/1.0 200 OK"
+   puts $soc "HTTP/1.0 [::emberweb::http_return 200]"
    puts $soc "Connection: close"
    puts $soc ""
    close $soc
 }
 proc left {soc parms} {
    puts "in Left"
-   puts $soc "HTTP/1.0 200 OK"
+   puts $soc "HTTP/1.0 [::emberweb::http_return 200]"
    puts $soc "Connection: close"
    puts $soc ""
    close $soc
 }
 proc right {soc parms} {
    puts "in Right"
-   puts $soc "HTTP/1.0 200 OK"
+   puts $soc "HTTP/1.0 [::emberweb::http_return 200]"
    puts $soc "Connection: close"
    puts $soc ""
    close $soc
@@ -68,6 +68,6 @@ proc right {soc parms} {
 ::emberweb::addRoute {/left} left
 ::emberweb::addRoute {/right} right
 
-# Start the server up and set you WWW html pages home and images home.
+# Start the server up and set your port, WWW html pages home and images home.
 ::emberweb::run 8080 "c:/home/www/templates" \
                      "c:/home/www/images"

@@ -14,7 +14,7 @@ package require Tcl      8.5
 # Create the namespace
 namespace eval ::emberweb {
     # Export commands
-   namespace export run addRoute contentType
+   namespace export run addRoute contentType http_return
 
    variable root "/home/www/templates"
    variable image_root "/home/www/images"
@@ -147,6 +147,16 @@ proc ::emberweb::contentType {ext} {
    }
 
    return $content_types($ext)
+}
+
+proc ::emberweb::http_return {ret_code} {
+   variable return_codes
+
+   if {![info exists return_codes($ret_code)]} {
+      set ret_code {200}
+   }
+
+   return $return_codes($ret_code)
 }
 
 proc ::emberweb::parmsTodict {parms} {
