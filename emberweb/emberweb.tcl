@@ -97,21 +97,13 @@ proc ::emberweb::processRequest {soc} {
 
    set ext [file extension $path]
    if {[string match *$ext* $images]} {
-      set wholeName $image_root$path
+      set wholeName $image_root/[file tail $path]
    } else {
       set wholeName $root$path
    }
 
-   if {[catch {set fileChannel [open $wholeName RDONLY]}]} {
+   if {[::emberweb::sendFile $soc $wholeName]} {
       404NotFound $soc $path
-   } else {
-      fconfigure $fileChannel -translation binary
-      fconfigure $soc -translation binary -buffering full
-      puts $soc "HTTP/1.0 $return_codes(200)"
-      puts $soc "Content-Type: $content_types([string trim $ext {.}])"
-      puts $soc "Connection: close"
-      puts $soc ""
-      fcopy $fileChannel $soc -command [list ::emberweb::done $fileChannel $soc]
    }
 }
 
@@ -168,6 +160,25 @@ proc ::emberweb::parmsTodict {parms} {
    }
 
    return $parms_dict
+}
+
+proc ::emberweb::sendFile {soc file} {
+   variable content_types
+   variable return_codes
+
+   if {[catch {set fileChannel [open $file RDONLY]}]} {
+      return 1
+   } else {
+      set ext [file extension $file]
+      fconfigure $fileChannel -translation binary
+      fconfigure $soc -translation binary -buffering full
+      puts $soc "HTTP/1.0 $return_codes(200)"
+      puts $soc "Content-Type: $content_types([string trim $ext {.}])"
+      puts $soc "Connection: close"
+      puts $soc ""
+      fcopy $fileChannel $soc -command [list ::emberweb::done $fileChannel $soc]
+      return 0
+   }
 }
 
 proc ::emberweb::run {{port_in 8080} {root_in ""} {image_root_in ""}} {
