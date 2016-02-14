@@ -88,9 +88,11 @@ proc ::emberweb::processRequest {soc} {
    # See if there is a route handler for this path.
    foreach handler $uri_handlers {
       if {[lindex $handler 0] eq $path} {
+         # Build a list of the url parts to allow for url parms
+         set url_parms [split $path {/}]
          # Build a dict of the parms.
-         set parms_dic [::emberweb::parmsTodict $parms]
-         eval {[lindex $handler 1] $soc $parms_dic}
+         set query_parms_dic [::emberweb::parmsTodict $parms]
+         eval {[lindex $handler 1] $soc $query_parms_dic $url_parms}
          return
       }
    }
