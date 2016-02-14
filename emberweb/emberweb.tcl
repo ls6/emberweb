@@ -92,7 +92,8 @@ proc ::emberweb::processRequest {soc} {
          set url_parms [split $path {/}]
          # Build a dict of the parms.
          set query_parms_dic [::emberweb::parmsTodict $parms]
-         eval {[lindex $handler 1] $soc $query_parms_dic $url_parms}
+#         eval {[lindex $handler 1] $soc $query_parms_dic $url_parms}
+         eval {[lindex $handler 1] $soc $query_parms_dic {}}
          return
       }
    }

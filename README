@@ -22,17 +22,17 @@ TODO:
     - Add POST request handling.
     - Add examples
     - Document the lib
+    - Support simple url parameters. The url path is broken up into a list
+      and sent in as a parm to the route handler. i.e.: /users/add/jerry
 
 ADDED:
     - A sendFile function. Can be used to render files in route handlers.
-    - Siple url parmeters. The url path is broken up into a list
-      and sent in as a parm to the route handler. i.e.: /users/add/jerry
 
 Usage:
 
 Copy the emberweb folder to your local tcl lib directory
 
-A simple example:
+A simple example: (NOTE - url_parms is null for now)
 
 package require emberweb 1.0
 package require Tcl      8.5
@@ -49,8 +49,8 @@ proc forward {soc query_parms url_parms} {
 
 proc backward {soc query_parms url_parms} {
    puts "in Backward"
-   puts [lindex $url_parms 0]
-   puts [lindex $url_parms 1]
+#   puts [lindex $url_parms 0]
+#   puts [lindex $url_parms 1]
    puts $soc "HTTP/1.0 [::emberweb::http_return 200]"
    puts $soc "Connection: close"
    puts $soc ""
